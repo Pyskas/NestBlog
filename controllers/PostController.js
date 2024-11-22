@@ -90,9 +90,8 @@ export const update = async (req, res) => {
     try {
         const postId = req.params.id;
 
-        // Обновление статьи с использованием findOneAndUpdate для получения обновленного документа
         const updatedPost = await PostModel.findOneAndUpdate(
-            { _id: postId },  // Условие поиска
+            { _id: postId },  
             {
                 title: req.body.title,
                 text: req.body.text,
@@ -100,20 +99,18 @@ export const update = async (req, res) => {
                 user: req.userId,
                 tags: req.body.tags,
             },
-            { new: true } // Параметр для возвращения обновленного документа
+            { new: true } 
         );
 
-        // Проверка, если пост не найден
         if (!updatedPost) {
             return res.status(404).json({
                 message: 'Статья не найдена',
             });
         }
 
-        // Отправка успешного ответа с обновленным постом
         res.json({
             success: true,
-            post: updatedPost,  // Возвращаем обновленный пост
+            post: updatedPost,
         });
     } catch (err) {
         console.log(err);
