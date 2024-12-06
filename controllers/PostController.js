@@ -51,7 +51,8 @@ export const getOne = async (req, res) => {
             });
         }
 
-        res.json(updatedPost);
+        res.json(doc)
+        .populate('user');
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -74,7 +75,8 @@ export const remove = async (req, res) => {
 
         res.json({
             success: true,
-        });
+        },
+    ).populate('user');
     } catch (err) {
         console.log(err);
         res.status(500).json({
@@ -87,7 +89,7 @@ export const create = async (req, res) => {
     try {
         const doc = new PostModel({
             title: req.body.title,
-            text: req.body.title,
+            text: req.body.text,
             imageUrl: req.body.imageUrl,
             tags: req.body.tags,
             user: req.userId,
@@ -115,7 +117,7 @@ export const update = async (req, res) => {
                 text: req.body.text,
                 imageUrl: req.body.imageUrl,
                 user: req.userId,
-                tags: req.body.tags,
+                tags: req.body.tags.split(','),
             },
             { new: true } 
         );
